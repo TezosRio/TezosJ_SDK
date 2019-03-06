@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="top"
+            android:background="@color/darkGrey"
+            android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutLock"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:background="@color/darkGrey"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="15sp"
+            android:visibility="gone"
+            android:weightSum="1">
+
+            <EditText
+                android:id="@+id/editTextUnlockPhrase"
+                android:layout_width="0sp"
+                android:layout_height="50sp"
+                android:layout_margin="3sp"
+                android:layout_weight="0.85"
+                android:background="@color/grey"
+                android:hint="Unlock with your passphrase"
+                android:inputType="textPassword"
+                android:padding="15sp"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/btn_unlock"
+                android:layout_width="0sp"
+                android:layout_height="59sp"
+                android:layout_margin="3sp"
+                android:layout_weight="0.15"
+                android:text="OK"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutMain"
+            android:layout_width="fill_parent"
+            android:layout_height="580sp"
+            android:layout_gravity="top"
+            android:background="@color/white"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="top"
+            android:orientation="vertical"
+            android:paddingLeft="20sp"
+            android:paddingRight="20sp"
+            android:paddingTop="50sp"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewWalletLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Demo wallet"
+                    android:textSize="30sp"
+                    android:textStyle="bold"/>
+
+
+                <TextView
+                    android:id="@+id/textViewAliasLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:text="Name"/>
+
+                <EditText
+                    android:id="@+id/editTextAlias"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:background="@color/grey"
+                    android:hint="Type in a name for your wallet"
+                    android:padding="10sp"/>
+
+                <TextView
+                    android:id="@+id/textViewAddressLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:text="Address"/>
+
+                <TextView
+                    android:id="@+id/textViewAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:background="@color/grey"
+                    android:padding="10sp"
+                    android:text=""
+                    android:textColor="@color/darkGrey"/>
+
+                <TextView
+                    android:id="@+id/textViewBalanceLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20sp"
+                    android:text="Balance"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textViewBalance"
+                        android:layout_width="match_parent"
+                        android:layout_height="150sp"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:background="@color/grey"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:padding="30sp"
+                        android:text=""
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="150sp"
+                        android:padding="150sp"
+                        android:progressBackgroundTint="@color/colorPrimaryDark"
+                        android:visibility="visible"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:gravity="center|center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btn_send"
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Send"/>
+
+                <Button
+                    android:id="@+id/btn_receive"
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Receive"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="com.google.guava:guava:r05@jar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/r05/97fd3078118f05895ba5c3a95f3c335e2a2f34d/guava-r05.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/r05/832591e013c47e36cb962e11956e69cb8e1700b7/guava-r05-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

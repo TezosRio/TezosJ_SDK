@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:orientation="vertical"
+            android:padding="20sp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/liteGrey"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="15sp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewSendLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/send_funds"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
+
+
+            <TextView
+                android:id="@+id/textViewAddressLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50sp"
+                android:text="@string/to_address"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/editTextDestinationAddress"
+                    android:layout_width="0sp"
+                    android:layout_height="60sp"
+                    android:layout_weight="0.8"
+                    android:background="@color/grey"
+                    android:hint="@string/type_in_destination_address"
+                    android:padding="5sp"
+                    android:text=""
+                    android:textSize="18sp"/>
+
+                <ImageButton
+                    android:id="@+id/imageButton_scan"
+                    android:layout_width="0sp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:contentDescription="@string/qrcode_scan_button"
+                    android:padding="5sp"
+                    android:src="@mipmap/ic_barcode"/>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewAmountLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20sp"
+                android:text="@string/amount"/>
+
+            <EditText
+                android:id="@+id/editTextAmount"
+                android:layout_width="match_parent"
+                android:layout_height="60sp"
+                android:background="@color/grey"
+                android:hint="@string/type_in_amount_to_send"
+                android:inputType="numberDecimal"
+                android:padding="5sp"
+                android:textSize="18sp"/>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:gravity="center|center_vertical"
+            android:orientation="horizontal"
+            android:padding="50sp"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/green"
+                android:text="@string/confirm"
+                android:textColor="@color/white"/>
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="0sp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/cancel"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

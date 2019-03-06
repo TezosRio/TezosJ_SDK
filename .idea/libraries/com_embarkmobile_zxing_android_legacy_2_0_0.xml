@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="com.embarkmobile:zxing-android-legacy-2.0.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/zxing-android-legacy-2.0.0.aar/fe8330f83fcbf64115bac39de9f87fc7/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/zxing-android-legacy-2.0.0.aar/fe8330f83fcbf64115bac39de9f87fc7/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

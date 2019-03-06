@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.github.joshjdevl.libsodiumjni:libsodium-jni-aar-2.0.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/libsodium-jni-aar-2.0.1.aar/db64bbbc0c5f5882006edef2535a70c5/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/libsodium-jni-aar-2.0.1.aar/db64bbbc0c5f5882006edef2535a70c5/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.joshjdevl.libsodiumjni/libsodium-jni-aar/2.0.1/fcf77642b960f81d73ec48c979363b9f8f6fe689/libsodium-jni-aar-2.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

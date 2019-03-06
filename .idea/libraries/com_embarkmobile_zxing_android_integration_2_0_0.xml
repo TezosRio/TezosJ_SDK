@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="com.embarkmobile:zxing-android-integration-2.0.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/zxing-android-integration-2.0.0.aar/938018aebd32396b7efb2eead22bc3e7/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/zxing-android-integration-2.0.0.aar/938018aebd32396b7efb2eead22bc3e7/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

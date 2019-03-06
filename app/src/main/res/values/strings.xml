@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">TezosJ_SDK</string>
+    <string name="title_activity_main">TezosJ SDK Demo Wallet</string>
+    <string name="receive_funds">Receive funds</string>
+    <string name="send_funds">Send funds</string>
+    <string name="qrcode_of_your_address">QR Code image of your address</string>
+    <string name="ok">OK</string>
+    <string name="to_address">To address</string>
+    <string name="type_in_destination_address">Type in destination address</string>
+    <string name="qrcode_scan_button">Qrcode scan button</string>
+    <string name="amount">Amount</string>
+    <string name="type_in_amount_to_send">Type in amount to send</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="warning_write_down">WARNING: Write down in a piece of paper all information displayed on this page (passphrase and mnemonic words) and store it in a safe place. It will be required in order to access your wallet and move your funds.</string>
+    <string name="wallet_passphrase">Wallet passphrase</string>
+    <string name="type_a_passphrase">Type a passphrase</string>
+    <string name="create_new_wallet">Create new wallet</string>
+    <string name="mnemonic_words">Mnemonic words</string>
+    <string name="next">Next</string>
+    <string name="import_wallet_warning">Import Wallet: In order to restore a previosuly owned wallet, type the passphrase and mnemonic words used in the moment you to created it.</string>
+    <string name="passphrase">Passphrase</string>
+    <string name="type_the_passphrase">Type the passphrase</string>
+    <string name="import_wallet">Import wallet</string>
+</resources>

@@ -1,0 +1,71 @@
+apply plugin: 'com.android.library'
+apply plugin: 'me.lucas.fat-aar'
+
+ext {
+    bintrayRepo = 'tezos'
+    bintrayName = 'tezosj_android'
+
+    publishedGroupId = 'com.milfont.tezos'
+    libraryName = 'TezosJ'
+    artifact = 'tezosj_android'
+
+    libraryDescription = 'TezosGateway Java Integration Library'
+
+    siteUrl = 'https://github.com/LMilfont/TezosJ'
+    gitUrl = 'https://github.com/LMilfont/TezosJ.git'
+
+    libraryVersion = '0.9.7'
+
+    developerId = 'LMilfont'
+    developerName = 'Luiz Milfont'
+    developerEmail = 'lmilfont@hotmail.com'
+
+    licenseName = 'MIT'
+    licenseUrl = 'https://opensource.org/licenses/mit-license.php'
+    allLicenses = ["MIT"]
+}
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            postprocessing {
+                removeUnusedCode false
+                removeUnusedResources false
+                obfuscate false
+                optimizeCode false
+                proguardFile 'proguard-rules.pro'
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation 'com.google.guava:guava:r05'
+    implementation 'org.slf4j:slf4j-simple:1.6.1'
+    embed("com.github.joshjdevl.libsodiumjni:libsodium-jni-aar:2.0.1") { transitive true }
+    embed("org.apache.commons:commons-lang3:3.7") { transitive true }
+    embed("org.bitcoinj:bitcoinj-core:0.14.7") { transitive true }
+    embed("com.squareup.okhttp3:okhttp:3.11.0") { transitive true }
+}
+
+fatLibraryExt {
+    enable true
+}
+
+apply from: '../deployment/installv1.gradle'
+apply from: '../deployment/bintrayv1.gradle'

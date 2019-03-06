@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="com.milfont.tezos:tezosj_android-0.9.7">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/okio-1.14.0.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/protobuf-java-2.6.1.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/jcip-annotations-1.0.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/okhttp-3.11.0.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/commons-lang3-3.7.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/libsodium-jni-aar-2.0.1.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/orchid-1.2.1.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/slf4j-api-1.7.20.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/bitcoinj-core-0.14.7.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/jsr305-2.0.1.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/scrypt-1.4.0.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/okhttp-2.7.2.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/core-1.51.0.0.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tezosj_android-0.9.7.aar/188d593c0eecf3be177bf2d8cff4da53/jars/libs/guava-18.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.milfont.tezos/tezosj_android/0.9.7/e13d423b2ae34781da4d7380278b2be91d677c80/tezosj_android-0.9.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,85 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:padding="20sp">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout_import_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="30sp"
+                android:text="@string/import_wallet_warning"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout_wallet_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/passphrase" />
+
+            <EditText
+                android:id="@+id/editText_passphrase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/type_the_passphrase"
+                android:layout_marginBottom="20sp"
+                android:paddingTop="10sp"
+                android:text=""/>
+
+            <TextView
+                android:labelFor="@+id/editText_mnemonic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mnemonic_words"/>
+
+            <EditText
+                android:id="@+id/editText_mnemonic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:inputType="textMultiLine|textCapWords"
+                android:paddingBottom="10sp"
+                android:paddingTop="10sp"
+                android:text=""/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="30sp">
+
+            <Button
+                android:id="@+id/btn_import_wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:text="@string/import_wallet" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
