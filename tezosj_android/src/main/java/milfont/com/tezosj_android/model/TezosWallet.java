@@ -427,7 +427,7 @@ public class TezosWallet
 
     // Transfers funds (XTZ) from this wallet to another one.
     // Returns to the user the operation results from Tezos node.
-    public JSONObject send(String from, String to, BigDecimal amount, BigDecimal fee, String gasLimit, String storageLimit) throws Exception
+    public JSONObject send(String from, String to, BigDecimal amount, BigDecimal fee, String gasLimit, String storageLimit, JSONObject parameters) throws Exception
     {
         JSONObject result = new JSONObject();
 
@@ -450,7 +450,7 @@ public class TezosWallet
                                 encKeys.setEncIv(this.encIv);
                                 encKeys.setEncP(this.encPass);
 
-                                result = rpc.transfer(from, to, amount, fee, gasLimit, storageLimit, encKeys);
+                                result = rpc.transfer(from, to, amount, fee, gasLimit, storageLimit, encKeys, parameters);
                             }
                             else
                             {
