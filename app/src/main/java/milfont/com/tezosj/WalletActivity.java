@@ -417,7 +417,7 @@ public class WalletActivity extends AppCompatActivity
                                                     try
                                                     {
                                                         BigDecimal myFee = new BigDecimal("0.05");
-                                                        operationResult = myWallet.send(myWallet.getPublicKeyHash(), dest_address, bdAmount, myFee, null, null);
+                                                        operationResult = myWallet.send(myWallet.getPublicKeyHash(), dest_address, bdAmount, myFee, null, null, null);
                                                     }
                                                     catch (Exception e)
                                                     {

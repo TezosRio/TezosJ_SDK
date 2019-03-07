@@ -74,13 +74,13 @@ public class Rpc
 
     }
 
-    public JSONObject transfer(String from, String to, BigDecimal amount, BigDecimal fee, String gasLimit, String storageLimit, EncKeys encKeys)
+    public JSONObject transfer(String from, String to, BigDecimal amount, BigDecimal fee, String gasLimit, String storageLimit, EncKeys encKeys, JSONObject parameters)
     {
         JSONObject result = new JSONObject();
 
         try
         {
-            result = (JSONObject) tezosGateway.sendTransaction(from, to, amount, fee, gasLimit, storageLimit, encKeys);
+            result = (JSONObject) tezosGateway.sendTransaction(from, to, amount, fee, gasLimit, storageLimit, encKeys, parameters);
         }
         catch (Exception e)
         {

@@ -227,7 +227,7 @@ public class TezosGateway
     }
 
     // Sends a transaction to the Tezos node.
-    public JSONObject sendTransaction(String from, String to, BigDecimal amount, BigDecimal fee, String gasLimit, String storageLimit, EncKeys encKeys) throws Exception
+    public JSONObject sendTransaction(String from, String to, BigDecimal amount, BigDecimal fee, String gasLimit, String storageLimit, EncKeys encKeys, JSONObject parameters) throws Exception
     {
         JSONObject result = new JSONObject();
 
@@ -238,7 +238,7 @@ public class TezosGateway
         JSONObject transaction = new JSONObject();
         JSONObject head = new JSONObject();
         JSONObject account = new JSONObject();
-        JSONObject parameters = new JSONObject();
+        JSONObject param = new JSONObject();
         JSONArray argsArray = new JSONArray();
         Integer counter = 0;
 
@@ -258,7 +258,6 @@ public class TezosGateway
                 return returned;
             }
         }
-
 
         if (gasLimit == null)
         {
@@ -306,9 +305,18 @@ public class TezosGateway
         transaction.put("source", from);
         String OPERATION_KIND_TRANSACTION = "transaction";
         transaction.put("kind", OPERATION_KIND_TRANSACTION);
-        parameters.put("prim", "Unit");
-        parameters.put("args", argsArray);
-        transaction.put("parameters", parameters);
+
+        if ((parameters == null)||(parameters.length() == 0))
+        {
+            param.put("prim", "Unit");
+            param.put("args", argsArray);
+            transaction.put("parameters", param);
+        }
+        else
+        {
+           // User has passed some parameters. Add it to the transaction.
+            transaction.put("parameters", parameters);
+        }
 
         operations.put(transaction);
 
