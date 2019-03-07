@@ -45,10 +45,10 @@ dependencies {
 
     
     // To test the wallet demo app, uncomment the line below and comment the next one.
-    compile 'com.milfont.tezos:tezosj_android:0.9.9'
+    compile 'com.milfont.tezos:tezosj_android:0.9.91'
 
     // To compile the library, comment the previous line and uncomment the line below.
-    //compile project(path: ':tezosj_android')
+    // compile project(path: ':tezosj_android')
 
 
     // Supports Android 4.0.3 and later (API level 15)

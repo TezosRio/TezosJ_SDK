@@ -273,7 +273,7 @@ public class TezosGateway
 
         if (storageLimit == null)
         {
-            storageLimit = "0";
+            storageLimit = "300";
         }
         else
         {
