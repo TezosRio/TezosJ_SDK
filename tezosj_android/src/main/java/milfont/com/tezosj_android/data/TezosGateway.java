@@ -173,9 +173,9 @@ public class TezosGateway
             JSONObject injectedOperation = injectOperation(signedOpGroup);
             if (isJSONArray(injectedOperation.toString()))
             {
-                if (((JSONObject)((JSONArray)injectedOperation.get("result")).get(0)).has("error"))
+                if (((JSONObject) ((JSONArray) injectedOperation.get("result")).get(0)).has("error"))
                 {
-                    String err = (String) ((JSONObject)((JSONArray)injectedOperation.get("result")).get(0)).get("error");
+                    String err = (String) ((JSONObject) ((JSONArray) injectedOperation.get("result")).get(0)).get("error");
                     String reason = "There were errors: '" + err + "'";
 
                     result.put("result", reason);
@@ -192,9 +192,9 @@ public class TezosGateway
                 {
                     if (isJSONArray(injectedOperation.get("result").toString()))
                     {
-                        if (((JSONObject)((JSONArray)injectedOperation.get("result")).get(0)).has("error"))
+                        if (((JSONObject) ((JSONArray) injectedOperation.get("result")).get(0)).has("error"))
                         {
-                            String err = (String) ((JSONObject)((JSONArray)injectedOperation.get("result")).get(0)).get("error");
+                            String err = (String) ((JSONObject) ((JSONArray) injectedOperation.get("result")).get(0)).get("error");
                             String reason = "There were errors: '" + err + "'";
 
                             result.put("result", reason);
@@ -231,8 +231,8 @@ public class TezosGateway
     {
         JSONObject result = new JSONObject();
 
-        BigDecimal roundedAmount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
-        BigDecimal roundedFee = fee.setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal roundedAmount = amount.setScale(5, BigDecimal.ROUND_HALF_UP);
+        BigDecimal roundedFee = fee.setScale(5, BigDecimal.ROUND_HALF_UP);
         JSONArray operations = new JSONArray();
         JSONObject revealOperation = new JSONObject();
         JSONObject transaction = new JSONObject();
@@ -306,7 +306,7 @@ public class TezosGateway
         String OPERATION_KIND_TRANSACTION = "transaction";
         transaction.put("kind", OPERATION_KIND_TRANSACTION);
 
-        if ((parameters == null)||(parameters.length() == 0))
+        if ((parameters == null) || (parameters.length() == 0))
         {
             param.put("prim", "Unit");
             param.put("args", argsArray);
@@ -314,7 +314,7 @@ public class TezosGateway
         }
         else
         {
-           // User has passed some parameters. Add it to the transaction.
+            // User has passed some parameters. Add it to the transaction.
             transaction.put("parameters", parameters);
         }
 
@@ -426,13 +426,13 @@ public class TezosGateway
         else if (isJSONArray(first.toString()))
         {
             // Loop through contents and check for errors.
-            Integer elements = ((JSONArray)first.get("contents")).length();
+            Integer elements = ((JSONArray) first.get("contents")).length();
             String element = "";
-            for(Integer i=0;i<elements;i++)
+            for (Integer i = 0; i < elements; i++)
             {
-                JSONObject operation_result = ( (JSONObject) ((JSONObject) (((JSONObject) (((JSONArray) first.get("contents")).get(i))).get("metadata"))).get("operation_result"));
-                element = ((JSONObject)operation_result).getString("status");
-                if(element.equals("failed") == true)
+                JSONObject operation_result = ((JSONObject) ((JSONObject) (((JSONObject) (((JSONArray) first.get("contents")).get(i))).get("metadata"))).get("operation_result"));
+                element = ((JSONObject) operation_result).getString("status");
+                if (element.equals("failed") == true)
                 {
                     errors = true;
                     if (operation_result.has("errors"))
@@ -457,7 +457,7 @@ public class TezosGateway
         return returned;
     }
 
-    private JSONObject appendRevealOperation (JSONObject blockHead, EncKeys encKeys, String pkh, Integer counter) throws Exception
+    private JSONObject appendRevealOperation(JSONObject blockHead, EncKeys encKeys, String pkh, Integer counter) throws Exception
     {
 
         // Create new JSON object for the reveal operation.
@@ -476,9 +476,8 @@ public class TezosGateway
 
 
         // If Manager key is not revealed for account...
-        if(!isManagerKeyRevealedForAccount(blockHead, pkh))
+        if (!isManagerKeyRevealedForAccount(blockHead, pkh))
         {
-
             revealOp.put("kind", "reveal");
             revealOp.put("source", pkh);
             revealOp.put("fee", "0");
