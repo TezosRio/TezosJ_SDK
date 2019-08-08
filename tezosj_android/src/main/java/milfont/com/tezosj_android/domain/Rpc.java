@@ -1,21 +1,31 @@
 package milfont.com.tezosj_android.domain;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import java.math.BigDecimal;
 
+import milfont.com.tezosj_android.data.BaseGateway;
+import milfont.com.tezosj_android.data.PocketGateway;
 import milfont.com.tezosj_android.data.TezosGateway;
+import milfont.com.tezosj_android.data.TezosNetwork;
 import milfont.com.tezosj_android.model.EncKeys;
 
 
 public class Rpc
 {
 
-    private TezosGateway tezosGateway = null;
+    private BaseGateway gateway = null;
 
 
+    // Uses default TezosGateway
     public Rpc()
     {
-        this.tezosGateway = new TezosGateway();
+        this.gateway = new TezosGateway();
+    }
+
+    // Uses PocketGateway
+    public Rpc(@NotNull String pocketDevID, @NotNull TezosNetwork pocketNetID, int pocketTimeout) {
+        this.gateway = new PocketGateway(pocketDevID, pocketNetID, pocketTimeout);
     }
 
 
@@ -26,7 +36,7 @@ public class Rpc
 
         try
         {
-            response = (String) tezosGateway.getHead().get("result");
+            response = (String) gateway.getHead().get("result");
             result.put("result", response);
 
         }
@@ -53,7 +63,7 @@ public class Rpc
 
         try
         {
-            response = (String) tezosGateway.getBalance(address).get("result");
+            response = (String) gateway.getBalance(address).get("result");
             result.put("result", response);
 
         }
@@ -80,7 +90,7 @@ public class Rpc
 
         try
         {
-            result = (JSONObject) tezosGateway.sendTransaction(from, to, amount, fee, gasLimit, storageLimit, encKeys, parameters);
+            result = (JSONObject) gateway.sendTransaction(from, to, amount, fee, gasLimit, storageLimit, encKeys, parameters);
         }
         catch (Exception e)
         {

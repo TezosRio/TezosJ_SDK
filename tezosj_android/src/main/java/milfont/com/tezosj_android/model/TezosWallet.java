@@ -6,6 +6,7 @@ import android.security.keystore.KeyProperties;
 import android.util.Base64;
 
 import org.bitcoinj.crypto.MnemonicCode;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 import org.libsodium.jni.NaCl;
 
@@ -22,6 +23,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import milfont.com.tezosj_android.data.TezosNetwork;
 import milfont.com.tezosj_android.domain.Crypto;
 import milfont.com.tezosj_android.domain.Rpc;
 import milfont.com.tezosj_android.helper.Base58;
@@ -75,6 +77,41 @@ public class TezosWallet
                 generateKeys(passPhrase);
 
                 initDomainClasses();
+            }
+            else
+            {
+                throw new java.lang.RuntimeException("A passphrase is mandatory.");
+            }
+        }
+        else
+        {
+            throw new java.lang.RuntimeException("Null passphrase.");
+        }
+    }
+
+    // Uses Pocket RPC
+    // Constuctor with passPhrase.
+    // This will create a new wallet and generate new keys and mnemonic words.
+    public TezosWallet(String passPhrase, @NotNull String pocketDevID, @NotNull TezosNetwork pocketNetID, int pocketTimeout) throws Exception
+    {
+        if (passPhrase != null)
+        {
+            if (passPhrase.length() > 0)
+            {
+
+                // Converts passPhrase String to a byte array, respecting char values.
+                byte[] c = new byte[passPhrase.length()];
+                for (int i = 0; i < passPhrase.length(); i++)
+                {
+                    c[i] = (byte) passPhrase.charAt(i);
+                }
+
+                initStore(c);
+
+                generateMnemonic();
+                generateKeys(passPhrase);
+
+                initDomainClasses(pocketDevID, pocketNetID, pocketTimeout);
             }
             else
             {
@@ -150,6 +187,70 @@ public class TezosWallet
         }
     }
 
+    // Uses Pocket RPC
+    // Constructor with previously owned mnemonic words and passPhrase.
+    // This will import an existing wallet from blockchain.
+    public TezosWallet(String mnemonicWords, String passPhrase, @NotNull String pocketDevID, @NotNull TezosNetwork pocketNetID, int pocketTimeout) throws Exception
+    {
+        if (mnemonicWords != null)
+        {
+            if (mnemonicWords.length() > 0)
+            {
+                if (passPhrase != null)
+                {
+                    if (passPhrase.length() > 0)
+                    {
+
+                        // Converts passPhrase String to a byte array, respecting char values.
+                        byte[] c = new byte[passPhrase.length()];
+                        for (int i = 0; i < passPhrase.length(); i++)
+                        {
+                            c[i] = (byte) passPhrase.charAt(i);
+                        }
+
+                        initStore(c);
+
+                        // Cleans undesired characters from mnemonic words.
+                        String cleanMnemonic = mnemonicWords.replace("[", "");
+                        cleanMnemonic = cleanMnemonic.replace("]", "");
+                        cleanMnemonic = cleanMnemonic.replace(",", " ");
+                        cleanMnemonic = cleanMnemonic.replace("  ", " ");
+
+                        // Converts mnemonicWords String to a byte array, respecting char values.
+                        byte[] b = new byte[cleanMnemonic.length()];
+                        for (int i = 0; i < cleanMnemonic.length(); i++)
+                        {
+                            b[i] = (byte) cleanMnemonic.charAt(i);
+                        }
+
+                        // Stores encypted mnemonic words into wallet's field.
+                        this.mnemonicWords = encryptBytes(b, getEncryptionKey());
+
+                        generateKeys(passPhrase);
+
+                        initDomainClasses(pocketDevID, pocketNetID, pocketTimeout);
+                    }
+                    else
+                    {
+                        throw new java.lang.RuntimeException("A passphrase is mandatory.");
+                    }
+                }
+                else
+                {
+                    throw new java.lang.RuntimeException("Null passphrase.");
+                }
+            }
+            else
+            {
+                throw new java.lang.RuntimeException("Mnemonic words are mandatory.");
+            }
+        }
+        else
+        {
+            throw new java.lang.RuntimeException("Null mnemonic words.");
+        }
+    }
+
     // Constructor for previously media persisted (saved) wallet.
     // This will load an existing wallet from media.
     public TezosWallet(Context ctx, String p)
@@ -160,6 +261,12 @@ public class TezosWallet
     private void initDomainClasses()
     {
         this.rpc = new Rpc();
+        this.crypto = new Crypto();
+    }
+
+    private void initDomainClasses(@NotNull String devID, @NotNull TezosNetwork netID, int timeout)
+    {
+        this.rpc = new Rpc(devID, netID, timeout);
         this.crypto = new Crypto();
     }
 
