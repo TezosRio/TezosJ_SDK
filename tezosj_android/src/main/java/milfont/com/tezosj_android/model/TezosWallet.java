@@ -264,6 +264,50 @@ public class TezosWallet
         this.crypto = new Crypto();
     }
 
+    public TezosWallet(String privateKey, String publicKey, String publicKeyHash, String passPhrase) throws Exception
+    {
+        // Imports an existing wallet from its keys.
+
+        resetWallet();
+        this.alias="";
+        this.mnemonicWords = null;
+
+        // Converts passPhrase String to a byte array, respecting char values.
+        byte[] z = new byte[passPhrase.length()];
+        for (int i = 0; i < passPhrase.length(); i++)
+        {
+            z[i] = (byte) passPhrase.charAt(i);
+        }
+
+        initStore(z);
+        initDomainClasses();
+
+        // Converts privateKey String to a byte array, respecting char values.
+        byte[] c = new byte[privateKey.length()];
+        for (int i = 0; i < privateKey.length(); i++)
+        {
+            c[i] = (byte) privateKey.charAt(i);
+        }
+        this.privateKey = encryptBytes(c, getEncryptionKey());
+
+        // Converts publicKey String to a byte array, respecting char values.
+        byte[] d = new byte[publicKey.length()];
+        for (int i = 0; i < publicKey.length(); i++)
+        {
+            d[i] = (byte) publicKey.charAt(i);
+        }
+        this.publicKey = encryptBytes(d, getEncryptionKey());
+
+        // Converts publicKeyHash String to a byte array, respecting char values.
+        byte[] e = new byte[publicKeyHash.length()];
+        for (int i = 0; i < publicKeyHash.length(); i++)
+        {
+            e[i] = (byte) publicKeyHash.charAt(i);
+        }
+        this.publicKeyHash = encryptBytes(e, getEncryptionKey());
+
+    }
+
     private void initDomainClasses(@NotNull String devID, @NotNull TezosNetwork netID, int timeout)
     {
         this.rpc = new Rpc(devID, netID, timeout);
@@ -873,6 +917,7 @@ public class TezosWallet
 
         return result;
     }
+
 
 }
 

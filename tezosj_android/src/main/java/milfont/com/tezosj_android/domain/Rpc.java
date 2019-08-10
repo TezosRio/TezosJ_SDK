@@ -102,4 +102,59 @@ public class Rpc
 
     }
 
+    public JSONObject delegate(String delegateFrom, String delegateTo, BigDecimal fee, String gasLimit, String storageLimit, EncKeys encKeys)
+    {
+        JSONObject result = new JSONObject();
+
+        try
+        {
+            result = (JSONObject) gateway.sendDelegationOperation(delegateFrom, delegateTo, fee, gasLimit, storageLimit, encKeys);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new java.lang.RuntimeException("An error occured while trying to do perform a delegation operation. See stacktrace for more info.");
+        }
+
+        return result;
+
+    }
+
+    public JSONObject originate(String from, Boolean spendable, Boolean delegatable, BigDecimal fee, String gasLimit, String storageLimit, BigDecimal amount, String code, String storage, EncKeys encKeys)
+    {
+        JSONObject result = new JSONObject();
+
+        try
+        {
+            result = (JSONObject) gateway.sendOriginationOperation(from, spendable, delegatable, fee, gasLimit, storageLimit, amount, code, storage, encKeys);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new java.lang.RuntimeException("An error occured while trying to do perform an origination operation. See stacktrace for more info.");
+        }
+
+        return result;
+
+    }
+
+    public JSONObject undelegate(String delegateFrom, BigDecimal fee, EncKeys encKeys)
+    {
+        JSONObject result = new JSONObject();
+
+        try
+        {
+            result = (JSONObject) gateway.sendUndelegationOperation(delegateFrom, fee, encKeys);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new java.lang.RuntimeException("An error occured while trying to do perform an undelegation operation. See stacktrace for more info.");
+        }
+
+        return result;
+
+    }
+
+
 }
