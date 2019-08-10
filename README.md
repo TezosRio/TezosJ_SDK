@@ -2,11 +2,14 @@
 
 The **TezosJ SDK library** enables Android Java developers to create apps that communicates with Tezos blockchain.
 
-The library is written in Java and is based on Android framework. This repository contains the library as well as a demo wallet application demonstrating how to use it.
+The library is written in Java and is based on Android framework. This repository contains the library source-code as well as a demo wallet application.
 
 ## Getting started
 
-Read the **[project documentation][doc-home]** for comprehensive information about the requirements, general workflow and installation procedure.
+This is the TezosJ_SDK_Android source-code. This code GENERATES the TezosJ library. To create Android APPs (wallets) that uses this library you just have to add the line below to the build.gradle file on your Android APP (please check latest version):
+
+compile 'com.milfont.tezos:tezosj_android:0.9.95'
+
 
 ## Disclaimer
 
@@ -26,6 +29,10 @@ Many features are not fully tested/implemented yet. This version uses Tezos Beta
 - Create valid Tezos wallet address
 - Get account balance
 - Send funds
+- Originate KT addresses
+- Delegate to a baker
+- Undelegate
+- Interact with POKT-Network API.
 
 
 The main purpose of TezosJ SDK library is to foster development of applications in Java / Android that interacts
