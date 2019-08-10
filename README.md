@@ -32,7 +32,7 @@ Many features are not fully tested/implemented yet. This version uses Tezos Main
 - Originate KT addresses
 - Delegate to a baker
 - Undelegate
-- Interact with POKT-Network API.
+- Interact with POKT-Network API
 
 
 The main purpose of TezosJ SDK library is to foster development of applications in Java / Android that interacts
