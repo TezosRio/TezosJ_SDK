@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/LMilfont/TezosJ'
     gitUrl = 'https://github.com/LMilfont/TezosJ.git'
 
-    libraryVersion = '0.9.95'
+    libraryVersion = '0.9.99'
 
     developerId = 'LMilfont'
     developerName = 'Luiz Milfont'
@@ -63,14 +63,20 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.google.guava:guava:r05'
     implementation 'org.slf4j:slf4j-simple:1.6.1'
-    implementation 'network.pocket.android:core:0.0.4'
     // These dependencies below MUST be referenced here as EMBED. Otherwise applications
     // that reference TezosJ_SDK as a dependency in build.gradle file will not recognize the classes within those libs.
     embed("com.github.joshjdevl.libsodiumjni:libsodium-jni-aar:2.0.1") { transitive true }
     embed("org.apache.commons:commons-lang3:3.7") { transitive true }
     embed("org.bitcoinj:bitcoinj-core:0.14.7") { transitive true }
     embed("com.squareup.okhttp3:okhttp:4.0.1") { transitive true }
+    embed("network.pocket.android:core:0.0.5") { transitive true }
 
+}
+
+configurations
+{
+   all*.exclude module:'appcompat-v7'
+   all*.exclude module: 'support-v4'
 }
 
 fatLibraryExt {

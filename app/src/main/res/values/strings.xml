@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TezosJ_SDK</string>
+    <string name="myapp_name">TezosJ_SDK</string>
     <string name="title_activity_main">TezosJ SDK Demo Wallet</string>
     <string name="receive_funds">Receive funds</string>
     <string name="send_funds">Send funds</string>
