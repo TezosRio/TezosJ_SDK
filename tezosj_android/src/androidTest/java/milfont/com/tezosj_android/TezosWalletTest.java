@@ -24,7 +24,8 @@ public class TezosWalletTest {
     @Test
     public void getBalancePocket() throws Exception {
         String devID = "";
-        TezosWallet pocketTezosWallet = new TezosWallet("1234", devID, TezosNetwork.ALPHANET, 60000);
+        TezosWallet pocketTezosWallet = new TezosWallet("chuckle,summer,decide,stay,phrase,hero,wrestle,shy,table,hen,gauge,more,noble,pelican,shaft", "yoyWpaWXIJ", "DEV", TezosNetwork.ALPHANET,3000);
+
         String balance = pocketTezosWallet.getBalance();
         Assert.assertNotNull(balance);
     }
