@@ -66,10 +66,10 @@ dependencies {
     implementation 'network.pocket.android:core:0.0.4'
     // These dependencies below MUST be referenced here as EMBED. Otherwise applications
     // that reference TezosJ_SDK as a dependency in build.gradle file will not recognize the classes within those libs.
-    embed("com.github.joshjdevl.libsodiumjni:libsodium-jni-aar:2.0.1") { transitive true }
-    embed("org.apache.commons:commons-lang3:3.7") { transitive true }
-    embed("org.bitcoinj:bitcoinj-core:0.14.7") { transitive true }
-    embed("com.squareup.okhttp3:okhttp:4.0.1") { transitive true }
+    implementation("com.github.joshjdevl.libsodiumjni:libsodium-jni-aar:2.0.1") { transitive true }
+    implementation("org.apache.commons:commons-lang3:3.7") { transitive true }
+    implementation("org.bitcoinj:bitcoinj-core:0.14.7") { transitive true }
+    implementation("com.squareup.okhttp3:okhttp:4.0.1") { transitive true }
 
 }
 

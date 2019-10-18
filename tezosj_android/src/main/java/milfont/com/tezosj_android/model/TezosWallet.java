@@ -264,7 +264,7 @@ public class TezosWallet
         this.crypto = new Crypto();
     }
 
-    public TezosWallet(String privateKey, String publicKey, String publicKeyHash, String passPhrase) throws Exception
+    public TezosWallet(String privateKey, String publicKey, String publicKeyHash, String passPhrase, @NotNull String pocketDevID, @NotNull TezosNetwork pocketNetID, int pocketTimeout) throws Exception
     {
         // Imports an existing wallet from its keys.
 
@@ -281,6 +281,7 @@ public class TezosWallet
 
         initStore(z);
         initDomainClasses();
+        initDomainClasses(pocketDevID, pocketNetID, pocketTimeout);
 
         // Converts privateKey String to a byte array, respecting char values.
         byte[] c = new byte[privateKey.length()];

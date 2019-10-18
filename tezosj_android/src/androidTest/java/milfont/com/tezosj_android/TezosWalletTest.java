@@ -7,6 +7,8 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.math.BigDecimal;
+
 import milfont.com.tezosj_android.data.TezosNetwork;
 import milfont.com.tezosj_android.model.TezosWallet;
 
@@ -24,9 +26,12 @@ public class TezosWalletTest {
     @Test
     public void getBalancePocket() throws Exception {
         String devID = "";
-        TezosWallet pocketTezosWallet = new TezosWallet("chuckle,summer,decide,stay,phrase,hero,wrestle,shy,table,hen,gauge,more,noble,pelican,shaft", "yoyWpaWXIJ", "DEV", TezosNetwork.ALPHANET,3000);
+        TezosWallet pocketTezosWallet = new TezosWallet("chuckle,summer,decide,stay,phrase,hero,wrestle,shy,table,hen,gauge,more,noble,pelican,shaft", "yoyWpaWXIJ", devID, TezosNetwork.ALPHANET,3000);
+        BigDecimal tez = new BigDecimal(1);
+        BigDecimal fee = new BigDecimal(200);
 
-        String balance = pocketTezosWallet.getBalance();
-        Assert.assertNotNull(balance);
+//        String balance = pocketTezosWallet.getBalance();
+        pocketTezosWallet.send("tz1N7pQJtTCmmRfHosmGxzhMkAnQAaiLW2tg","tz3WXYtyDUNL91qfiCJtVUX746QpNv5i5ve5",tez,fee,null,null,null);
+//        Assert.assertNotNull(balance);
     }
 }

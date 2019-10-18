@@ -149,7 +149,8 @@ public abstract class BaseGateway {
         if (balance.has("result"))
         {
             BigDecimal bdAmount = amount.multiply(BigDecimal.valueOf(UTEZ));
-            BigDecimal total = new BigDecimal(((balance.getString("result").replaceAll("\\n", "")).replaceAll("\"", "").replaceAll("'", "")));
+            String strAmount = balance.getString("result").replaceAll("\\\\", "").replaceAll("\"","").replaceAll("n","").replaceAll("'", "");
+            BigDecimal total = new BigDecimal(strAmount);
 
             if (total.compareTo(bdAmount) < 0) // Returns -1 if value iss less than amount.
             {
