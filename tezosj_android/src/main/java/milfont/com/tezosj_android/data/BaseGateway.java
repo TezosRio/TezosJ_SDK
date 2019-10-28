@@ -4,6 +4,7 @@ import android.security.keystore.KeyProperties;
 import android.util.Base64;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +20,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import milfont.com.tezosj_android.helper.Base58Check;
+import milfont.com.tezosj_android.helper.StringUtil;
 import milfont.com.tezosj_android.model.EncKeys;
 import milfont.com.tezosj_android.model.SignedOperationGroup;
 import milfont.com.tezosj_android.model.TezosWallet;
@@ -63,11 +65,12 @@ public abstract class BaseGateway {
         String forgedOperationGroup = "";
 
         head = (JSONObject) query("/chains/main/blocks/head/header", null);
-        forgedOperationGroup = forgeOperations(head, operations);
+        JSONObject headResult = new JSONObject(StringUtil.unescapeJSONString(head.getString("result")));
+        forgedOperationGroup = forgeOperations(headResult, operations);
 
         SignedOperationGroup signedOpGroup = signOperationGroup(forgedOperationGroup, encKeys);
         String operationGroupHash = computeOperationHash(signedOpGroup);
-        JSONObject appliedOp = applyOperation(head, operations, operationGroupHash, forgedOperationGroup, signedOpGroup);
+        JSONObject appliedOp = applyOperation(headResult, operations, operationGroupHash, StringUtil.unescapeJSONString(forgedOperationGroup), signedOpGroup);
         JSONObject opResult = checkAppliedOperationResults(appliedOp);
 
         if (opResult.get("result").toString().length() == 0)
@@ -149,7 +152,7 @@ public abstract class BaseGateway {
         if (balance.has("result"))
         {
             BigDecimal bdAmount = amount.multiply(BigDecimal.valueOf(UTEZ));
-            String strAmount = balance.getString("result").replaceAll("\\\\", "").replaceAll("\"","").replaceAll("n","").replaceAll("'", "");
+            String strAmount = StringUtil.unescapeJSONString(balance.getString("result")).replaceAll("\"","");
             BigDecimal total = new BigDecimal(strAmount);
 
             if (total.compareTo(bdAmount) < 0) // Returns -1 if value iss less than amount.
@@ -187,8 +190,12 @@ public abstract class BaseGateway {
         }
 
         head = new JSONObject(query("/chains/main/blocks/head/header", null).toString());
+        if (head.has("result")){
+            head = new JSONObject(StringUtil.unescapeJSONString(head.getString("result")));
+        }
         account = getAccountForBlock(head.get("hash").toString(), from);
-        counter = Integer.parseInt(account.get("counter").toString());
+        JSONObject accountObject = new JSONObject(StringUtil.unescapeJSONString(account.getString("result")));
+        counter = Integer.parseInt(accountObject.get("counter").toString());
 
         // Append Reveal Operation if needed.
         revealOperation = appendRevealOperation(head, encKeys, from, (counter));
@@ -231,7 +238,7 @@ public abstract class BaseGateway {
     {
 
         SignedOperationGroup signedOperationGroup = null;
-
+        forgedOperation = StringUtil.unescapeJSONString(forgedOperation);
         JSONObject signed = sign(HEX.decode(forgedOperation), encKeys, "03");
 
         // Prepares the object to be returned.
@@ -312,6 +319,7 @@ public abstract class BaseGateway {
         firstAppliedOp = appliedOp;
 
         String firstApplyed = firstAppliedOp.toString().replaceAll("\\\\n", "").replaceAll("\\\\", "");
+        firstApplyed = StringUtils.replaceAll(firstApplyed, "\"\"", "");
         JSONArray result = new JSONArray(new JSONObject(firstApplyed).get("result").toString());
         JSONObject first = (JSONObject) result.get(0);
 

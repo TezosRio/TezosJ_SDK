@@ -30,8 +30,7 @@ public class TezosWalletTest {
         BigDecimal tez = new BigDecimal(1);
         BigDecimal fee = new BigDecimal(200);
 
-//        String balance = pocketTezosWallet.getBalance();
-        pocketTezosWallet.send("tz1N7pQJtTCmmRfHosmGxzhMkAnQAaiLW2tg","tz3WXYtyDUNL91qfiCJtVUX746QpNv5i5ve5",tez,fee,null,null,null);
-//        Assert.assertNotNull(balance);
+        String balance = pocketTezosWallet.getBalance();
+        Assert.assertNotNull(balance);
     }
 }
