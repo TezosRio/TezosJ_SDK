@@ -136,8 +136,8 @@ public abstract class BaseGateway {
     {
         JSONObject result = new JSONObject();
 
-        BigDecimal roundedAmount = amount.setScale(5, BigDecimal.ROUND_HALF_UP);
-        BigDecimal roundedFee = fee.setScale(5, BigDecimal.ROUND_HALF_UP);
+        BigDecimal roundedAmount = amount.setScale(6, BigDecimal.ROUND_HALF_UP);
+        BigDecimal roundedFee = fee.setScale(6, BigDecimal.ROUND_HALF_UP);
         JSONArray operations = new JSONArray();
         JSONObject revealOperation = new JSONObject();
         JSONObject transaction = new JSONObject();
@@ -167,13 +167,13 @@ public abstract class BaseGateway {
 
         if (gasLimit == null)
         {
-            gasLimit = "11000";
+            gasLimit = "15400";
         }
         else
         {
             if ((gasLimit.length() == 0) || (gasLimit.equals("0")))
             {
-                gasLimit = "11000";
+                gasLimit = "15400";
             }
         }
 
@@ -215,13 +215,7 @@ public abstract class BaseGateway {
         transaction.put("source", from);
         transaction.put("kind", OPERATION_KIND_TRANSACTION);
 
-        if ((parameters == null) || (parameters.length() == 0))
-        {
-            param.put("prim", "Unit");
-            param.put("args", argsArray);
-            transaction.put("parameters", param);
-        }
-        else
+        if ((parameters != null) && (parameters.length() > 0))
         {
             // User has passed some parameters. Add it to the transaction.
             transaction.put("parameters", parameters);
@@ -388,14 +382,14 @@ public abstract class BaseGateway {
         // If Manager key is not revealed for account...
         if (!isManagerKeyRevealedForAccount(blockHead, pkh))
         {
-            BigDecimal fee = new BigDecimal("0.001267");
+            BigDecimal fee = new BigDecimal("0.001300");
             BigDecimal roundedFee = fee.setScale(6, BigDecimal.ROUND_HALF_UP);
             revealOp.put("kind", "reveal");
             revealOp.put("source", pkh);
             revealOp.put("fee", (String.valueOf(roundedFee.multiply(BigDecimal.valueOf(UTEZ)).toBigInteger())));
             revealOp.put("counter", String.valueOf(counter + 1));
-            revealOp.put("gas_limit", "11000");
-            revealOp.put("storage_limit", "300");
+            revealOp.put("gas_limit", "10000");
+            revealOp.put("storage_limit", "0");
             revealOp.put("public_key", publicKey);
 
         }
@@ -410,12 +404,32 @@ public abstract class BaseGateway {
     private boolean isManagerKeyRevealedForAccount(JSONObject blockHead, String pkh) throws Exception
     {
         Boolean result = false;
-        String blockHeadHash = "";
+        String blockHeadHash = blockHead.getString("hash");
+        String r = "";
 
-        blockHeadHash = blockHead.getString("hash").toString();
-        Boolean managerKey = getAccountManagerForBlock(blockHeadHash, pkh).has("key");
+        Boolean hasResult = getAccountManagerForBlock(blockHeadHash, pkh).has("result");
 
-        return managerKey;
+        if (hasResult)
+        {
+            r = (String) getAccountManagerForBlock(blockHeadHash, pkh).get("result");
+
+            // Do some cleaning.
+            r = r.replace("\"", "");
+            r = r.replace("\n", "");
+            r = r.trim();
+
+            if (r.equals("null") == true)
+            {
+                result = false;
+            }
+            else
+            {
+                // Account already revealed.
+                result = true;
+            }
+        }
+
+        return result;
     }
 
     private JSONObject injectOperation(SignedOperationGroup signedOpGroup) throws Exception
