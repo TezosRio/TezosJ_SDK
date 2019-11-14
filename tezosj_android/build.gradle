@@ -67,12 +67,11 @@ dependencies {
     compileOnly 'org.slf4j:slf4j-simple:1.6.1'
     // These dependencies below MUST be referenced here as EMBED. Otherwise applications
     // that reference TezosJ_SDK as a dependency in build.gradle file will not recognize the classes within those libs.
-    implementation "com.github.joshjdevl.libsodiumjni:libsodium-jni-aar:2.0.1"
-    implementation "org.apache.commons:commons-lang3:3.7"
-    implementation "org.bitcoinj:bitcoinj-core:0.14.7"
-    implementation "com.squareup.okhttp3:okhttp:4.0.1"
-    implementation "network.pocket.android:core:0.0.5"
-
+    embed "com.github.joshjdevl.libsodiumjni:libsodium-jni-aar:2.0.1"
+    embed "org.apache.commons:commons-lang3:3.7"
+    embed "org.bitcoinj:bitcoinj-core:0.14.7"
+    embed "com.squareup.okhttp3:okhttp:4.0.1"
+    embed "network.pocket.android:core:0.0.5"
 }
 
 configurations
