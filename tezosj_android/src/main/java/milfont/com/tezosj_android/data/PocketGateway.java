@@ -56,7 +56,14 @@ public class PocketGateway extends BaseGateway {
         @Override
         public Unit invoke(PocketError pocketError, String response) {
             try {
-                if (isJSONObject(response)) {
+                if (pocketError != null) {
+                    if (isJSONObject(pocketError.getMessage())) {
+                        result = new JSONObject(pocketError.getMessage());
+                    } else {
+                        result = new JSONObject();
+                        result.put("result", pocketError.getMessage());
+                    }
+                } else if (isJSONObject(response)) {
                     result = new JSONObject(response);
                 } else {
                     if (isJSONArray(response)) {

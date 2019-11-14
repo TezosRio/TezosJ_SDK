@@ -72,7 +72,6 @@ dependencies {
     embed "org.bitcoinj:bitcoinj-core:0.14.7"
     embed "com.squareup.okhttp3:okhttp:4.0.1"
     embed "network.pocket.android:core:0.0.5"
-
 }
 
 configurations
