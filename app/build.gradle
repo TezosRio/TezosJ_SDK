@@ -47,14 +47,14 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    implementation project(':tezosj_android')
 
-    
-    // To test the wallet demo app, uncomment the line below and comment the next one.
-    implementation 'com.milfont.tezos:tezosj_android:0.9.996'
-
-    // To compile the library, comment the previous line and uncomment the line below.
-    // implementation project(path: ':tezosj_android')
-
+    // Uncomment to test the demos app. Comment to build the library.
+    //implementation "com.squareup.okhttp3:okhttp:4.0.1"
+    //implementation "org.bitcoinj:bitcoinj-core:0.14.7"
+    //implementation "org.apache.commons:commons-lang3:3.7"
+    //implementation "com.github.joshjdevl.libsodiumjni:libsodium-jni-aar:2.0.1"
+    //implementation "network.pocket.android:core:0.0.5"
 
     // Supports Android 4.0.3 and later (API level 15)
     implementation 'com.embarkmobile:zxing-android-minimal:2.0.0@aar'
@@ -73,4 +73,18 @@ dependencies {
     // Older versions e.g. 2.2 may also work if you need support for older Android versions.
     implementation 'com.google.zxing:core:3.3.3'
 
+    // Uncomment to test the demo app.
+    //android {
+    //    packagingOptions {
+    //        pickFirst 'lib/arm64-v8a/libsodiumjni.so'
+    //        pickFirst 'lib/x86/libsodiumjni.so'
+    //        pickFirst 'lib/armeabi-v7a/libsodiumjni.so'
+    //        pickFirst 'lib/x86_64/libsodiumjni.so'
+    //        pickFirst 'lib/armeabi-v7a/libconceal.so'
+    //        pickFirst 'lib/x86_64/libconceal.so'
+    //        pickFirst 'lib/arm64-v8a/libconceal.so'
+    //        pickFirst  'lib/armeabi/libconceal.so'
+    //        pickFirst 'lib/x86/libconceal.so'
+    //    }
+    //}
 }

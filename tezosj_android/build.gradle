@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/LMilfont/TezosJ'
     gitUrl = 'https://github.com/LMilfont/TezosJ.git'
 
-    libraryVersion = '0.9.996'
+    libraryVersion = '0.9.998'
 
     developerId = 'LMilfont'
     developerName = 'Luiz Milfont'

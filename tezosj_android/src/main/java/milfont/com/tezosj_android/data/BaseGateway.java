@@ -4,6 +4,8 @@ import android.security.keystore.KeyProperties;
 import android.util.Base64;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.tuple.MutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +13,9 @@ import org.libsodium.jni.NaCl;
 
 import java.math.BigDecimal;
 import java.security.KeyStore;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -710,6 +714,415 @@ public abstract class BaseGateway {
     public JSONObject sendUndelegationOperation(String delegator, BigDecimal fee, EncKeys encKeys) throws Exception
     {
         return sendDelegationOperation(delegator, "undefined", fee, "", "", encKeys);
+    }
+
+
+    // Calls a contract passing parameters.
+    public JSONObject callContractEntryPoint(String from, String contract, BigDecimal amount, BigDecimal fee,
+                                             String gasLimit, String storageLimit, EncKeys encKeys, String entrypoint,
+                                             String[] parameters)
+            throws Exception
+    {
+        JSONObject result = new JSONObject();
+
+        BigDecimal roundedAmount = amount.setScale(6, BigDecimal.ROUND_HALF_UP);
+        BigDecimal roundedFee = fee.setScale(6, BigDecimal.ROUND_HALF_UP);
+        JSONArray operations = new JSONArray();
+        JSONObject revealOperation = new JSONObject();
+        JSONObject transaction = new JSONObject();
+        JSONObject head = new JSONObject();
+        JSONObject account = new JSONObject();
+        Integer counter = 0;
+
+        // Check if address has enough funds to do the transfer operation.
+        JSONObject balance = getBalance(from);
+
+        if(balance.has("result"))
+        {
+            BigDecimal bdAmount = amount.multiply(BigDecimal.valueOf(UTEZ));
+            BigDecimal total = new BigDecimal(
+                    ((balance.getString("result").replaceAll("\\n", "")).replaceAll("\"", "").replaceAll("'", "")));
+
+            if(total.compareTo(bdAmount) < 0) // Returns -1 if value is less than amount.
+            {
+                // Not enough funds to do the transfer.
+                JSONObject returned = new JSONObject();
+                returned.put("result",
+                        "{ \"result\":\"error\", \"kind\":\"TezosJ_SDK_exception\", \"id\": \"Not enough funds\" }");
+
+                return returned;
+            }
+        }
+
+        if(gasLimit == null)
+        {
+            gasLimit = "750000";
+        }
+        else
+        {
+            if((gasLimit.length() == 0) || (gasLimit.equals("0")))
+            {
+                gasLimit = "750000";
+            }
+        }
+
+        if(storageLimit == null)
+        {
+            storageLimit = "1000";
+        }
+        else
+        {
+            if(storageLimit.length() == 0)
+            {
+                storageLimit = "1000";
+            }
+        }
+
+        head = new JSONObject(query("/chains/main/blocks/head/header", null).toString());
+        account = getAccountForBlock(head.get("hash").toString(), from);
+        counter = Integer.parseInt(account.get("counter").toString());
+
+        // Append Reveal Operation if needed.
+        revealOperation = appendRevealOperation(head, encKeys, from, (counter));
+
+        if(revealOperation != null)
+        {
+            operations.put(revealOperation);
+            counter = counter + 1;
+        }
+
+        transaction.put("destination", contract);
+        transaction.put("amount", (String.valueOf(roundedAmount.multiply(BigDecimal.valueOf(UTEZ)).toBigInteger())));
+        transaction.put("storage_limit", storageLimit);
+        transaction.put("gas_limit", gasLimit);
+        transaction.put("counter", String.valueOf(counter + 1));
+        transaction.put("fee", (String.valueOf(roundedFee.multiply(BigDecimal.valueOf(UTEZ)).toBigInteger())));
+        transaction.put("source", from);
+        transaction.put("kind", OPERATION_KIND_TRANSACTION);
+
+        // Builds a Michelson-compatible set of parameters to pass to the smart
+        // contract.
+        JSONObject myparamJson = new JSONObject();
+
+        String[] contractEntryPoints = getContractEntryPoints(contract);
+        String[] contractEntryPointParameters = getContractEntryPointsParameters(contract, entrypoint, "names");
+        String[] contractEntryPointParametersTypes = getContractEntryPointsParameters(contract, entrypoint, "types");
+
+        myparamJson = paramValueBuilder(entrypoint, contractEntryPoints, parameters, contractEntryPointParameters,
+                contractEntryPointParametersTypes);
+
+        // Adds the smart contract parameters to the transaction.
+        JSONObject myParams = new JSONObject();
+        myParams.put("entrypoint", "default");
+        myParams.put("value", myparamJson);
+
+        transaction.put("parameters", myParams);
+
+        operations.put(transaction);
+
+        result = (JSONObject) sendOperation(operations, encKeys);
+
+        return result;
+    }
+
+    private String[] getContractEntryPoints(String contractAddress) throws Exception
+    {
+        JSONObject response = (JSONObject) query(
+                "/chains/main/blocks/head/context/contracts/" + contractAddress + "/entrypoints", null);
+
+        JSONObject entryPointsJson = (JSONObject) response.get("entrypoints");
+
+        JSONArray arr = entryPointsJson.names();
+        ArrayList<String> list = new ArrayList<String>();
+        for(int i = 0; i < arr.length(); i++)
+        {
+            list.add((String) arr.get(i));
+        }
+
+        String[] entrypoints  = new String[list.size()];
+        entrypoints = list.toArray(entrypoints);
+
+        // If there is a list of entrypoints, then sort its elements.
+        // This is fundamental for the call to work, as the order of the entrypoints
+        // matter.
+        if(entrypoints != null)
+        {
+            if(entrypoints.length > 1)
+            {
+                Arrays.sort(entrypoints);
+            }
+        }
+        else
+        {
+            // If there are no entrypoints declared in the contract, consider only the
+            // "default" entrypoint.
+            entrypoints = new String[]
+                    { "default" };
+        }
+
+        return entrypoints;
+    }
+
+    private String[] getContractEntryPointsParameters(String contractAddress, String entrypoint, String namesOrTypes)
+            throws Exception
+    {
+        ArrayList<String> parameters = new ArrayList<String>();
+
+        // If no desired entrypoint was specified, use the "default" entrypoint.
+        if((entrypoint == null) || (entrypoint.length() == 0))
+        {
+            entrypoint = "default";
+        }
+
+        JSONObject response = (JSONObject) query(
+                "/chains/main/blocks/head/context/contracts/" + contractAddress + "/entrypoints/" + entrypoint, null);
+
+        JSONArray paramArray = decodeMichelineParameters(response, null);
+
+        JSONObject jsonObj = new JSONObject();
+
+        parameters = new ArrayList<String>();
+
+        if(namesOrTypes.equals("names"))
+        {
+            for(int i = paramArray.length() - 1; i >= 0; i--)
+            {
+                jsonObj = (JSONObject) paramArray.get(i);
+                if(jsonObj.has("annots"))
+                {
+                    JSONArray annotsArray = (JSONArray) jsonObj.get("annots");
+                    parameters.add((String) annotsArray.getString(0).replace("%", ""));
+                }
+            }
+        }
+        else if(namesOrTypes.equals("types"))
+        {
+            for(int i = paramArray.length() - 1; i >= 0; i--)
+            {
+                jsonObj = (JSONObject) paramArray.get(i);
+                if(jsonObj.has("prim"))
+                {
+                    parameters.add((String) jsonObj.get("prim"));
+                }
+            }
+        }
+
+        String[] tempArray = new String[parameters.size()];
+        tempArray = parameters.toArray(tempArray);
+
+        return tempArray;
+    }
+
+    private JSONArray decodeMichelineParameters(JSONObject jsonObj, JSONArray builtArray) throws Exception
+    {
+        JSONObject left = new JSONObject();
+        JSONObject right = new JSONObject();
+
+        if((jsonObj.has("args") == true) || (jsonObj.has("prim") == true))
+        {
+            if(builtArray == null)
+            {
+                builtArray = new JSONArray();
+            }
+
+            if(jsonObj.has("args"))
+            {
+                JSONArray myArr = jsonObj.getJSONArray("args");
+                left = myArr.getJSONObject(0);
+                right = myArr.getJSONObject(1);
+            }
+            else
+            {
+                right = jsonObj;
+            }
+
+            builtArray.put(right);
+            return decodeMichelineParameters(left, builtArray);
+
+        }
+        builtArray.put(left);
+
+        return builtArray;
+    }
+
+    private JSONObject paramValueBuilder(String entrypoint, String[] contractEntrypoints, String[] parameters,
+                                         String[] contractEntryPointParameters, String[] datatypes) throws Exception
+    {
+
+        // Creates a base Pair, so we can build our Michelson message parameter.
+        Pair<Pair, String> basePair = null;
+
+        // Creates the JSON object that will be returned by the methd.
+        JSONObject myJsonObj = new JSONObject();
+
+        List<String> parametersList = Arrays.asList(parameters);
+        List<String> typesList = Arrays.asList(datatypes);
+        List<String> entrypointsList = Arrays.asList(contractEntrypoints);
+
+        // Corrects typeList.
+        for(int i = 0; i < typesList.size(); i++)
+        {
+            switch (typesList.get(i))
+            {
+                case "int":
+                    typesList.set(i, "int");
+                    break;
+
+                case "nat":
+                    typesList.set(i, "int");
+                    break;
+                case "mutez":
+                    typesList.set(i, "int");
+                    break;
+                case "tez":
+                    typesList.set(i, "int");
+                    break;
+                case "bytes":
+                    typesList.set(i, "int");
+                    break;
+                case "key_hash":
+                    typesList.set(i, "string");
+                    break;
+                case "bool":
+                    typesList.set(i, "string");
+                    break;
+                case "unit":
+                    typesList.set(i, "string");
+                    break;
+
+                default:
+                    typesList.set(i, "string");
+
+            }
+
+        }
+
+        // Builds the parameters pairs and formats them as JSON.
+        myJsonObj = buildParameterPairs(myJsonObj, basePair, parametersList, typesList, 0);
+
+        // Builds the Micheline formatted JSON. Only if an entrypoint was specified.
+        if(entrypoint != null)
+        {
+            if((entrypoint.length() > 0) && (entrypoint.equals("default") == false))
+            {
+                // Builds the Michelson message and formats it as JSON.
+                myJsonObj = buildMessage(myJsonObj, entrypoint, entrypointsList);
+            }
+        }
+
+        return myJsonObj;
+    }
+
+    private JSONObject buildParameterPairs(JSONObject jsonObj, Pair pair, List<String> parameters,
+                                           List<String> datatypes, Integer firstElement) throws Exception
+    {
+
+        if(parameters.size() == 1)
+        {
+            jsonObj.put(datatypes.get(0), parameters.get(0));
+        }
+        else
+        {
+
+            for(int i = firstElement; i < parameters.size(); i++)
+            {
+                if(pair == null)
+                {
+                    pair = new MutablePair<>(parameters.get(i), parameters.get(i + 1));
+
+                    // Build JSON object with "prim" and "args".
+                    jsonObj.put("prim", "Pair");
+
+                    JSONArray jsonArray = new JSONArray();
+
+                    JSONObject newObj1 = new JSONObject();
+                    newObj1.put((String) datatypes.get(i), (String) parameters.get(i));
+                    jsonArray.put(newObj1);
+
+                    JSONObject newObj2 = new JSONObject();
+                    newObj2.put((String) datatypes.get(i + 1), (String) parameters.get(i + 1));
+                    jsonArray.put(newObj2);
+
+                    jsonObj.put("args", jsonArray);
+
+                }
+                else
+                {
+                    if((i + 1) < parameters.size())
+                    {
+                        pair = new MutablePair<>(pair, parameters.get(i + 1));
+
+                        // Builds new JSON object with "prim" and "args".
+                        JSONObject newJsonObj = new JSONObject();
+                        newJsonObj.put("prim", "Pair");
+                        JSONArray jsonArray = new JSONArray();
+                        jsonArray.put(jsonObj);
+
+                        JSONObject obj = new JSONObject();
+                        obj.put((String) datatypes.get(i + 1), (String) parameters.get(i + 1));
+                        jsonArray.put(obj);
+
+                        newJsonObj.put("args", jsonArray);
+
+                        return buildParameterPairs(newJsonObj, pair, parameters, datatypes, i + 1);
+
+                    }
+                }
+            }
+        }
+
+        return jsonObj;
+
+    }
+
+    private JSONObject buildMessage(JSONObject jsonObj, String entrypoint, List<String> entrypoints) throws Exception
+    {
+        JSONObject messageJsonObj = new JSONObject();
+
+        // Calculates the number of "Lefts".
+        Integer entrypointPosition = entrypoints.indexOf(entrypoint) + 1;
+        Integer numberOfLefts = (entrypoints.size() - entrypointPosition);
+
+        if(entrypointPosition > 1)
+        {
+            // Build JSON object with "prim" and "args".
+            messageJsonObj.put("prim", "Right");
+
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.put(jsonObj);
+            messageJsonObj.put("args", jsonArray);
+        }
+
+        for(int i = 0; i < numberOfLefts; i++)
+        {
+            if(messageJsonObj.length() == 0)
+            {
+                // Build JSON object with "prim" and "args".
+                messageJsonObj.put("prim", "Left");
+
+                JSONArray jsonArray = new JSONArray();
+                jsonArray.put(jsonObj);
+                messageJsonObj.put("args", jsonArray);
+            }
+            else
+            {
+                JSONObject newJsonObj = new JSONObject();
+
+                // Build JSON object with "prim" and "args".
+                if(entrypointPosition < entrypoints.size())
+                {
+                    newJsonObj.put("prim", "Left");
+                }
+
+                JSONArray jsonArray = new JSONArray();
+                jsonArray.put(messageJsonObj);
+                newJsonObj.put("args", jsonArray);
+                messageJsonObj = newJsonObj;
+            }
+        }
+
+        return messageJsonObj;
+
     }
 
 

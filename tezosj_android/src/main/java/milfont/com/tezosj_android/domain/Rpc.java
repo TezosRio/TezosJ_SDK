@@ -157,4 +157,26 @@ public class Rpc
     }
 
 
+    public JSONObject callContractEntryPoint(String from, String contract, BigDecimal amount, BigDecimal fee,
+                                             String gasLimit, String storageLimit, EncKeys encKeys, String entrypoint,
+                                             String[] parameters)
+    {
+        JSONObject result = new JSONObject();
+
+        try
+        {
+            result = (JSONObject) gateway.callContractEntryPoint(from, contract, amount, fee, gasLimit, storageLimit,
+                    encKeys, entrypoint, parameters);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            throw new java.lang.RuntimeException(
+                    "An error occured while trying to call to a contract. See stacktrace for more info.");
+        }
+
+        return result;
+
+    }
+
+
 }
