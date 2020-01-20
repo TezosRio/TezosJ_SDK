@@ -8,7 +8,7 @@ The library is written in Java and is based on Android framework. This repositor
 
 This is the TezosJ_SDK_Android source-code. This code GENERATES the TezosJ library. To create Android APPs (wallets) that uses this library you just have to add the line below to the build.gradle file on your Android APP (please check latest version):
 
-implementation 'com.milfont.tezos:tezosj_android:0.9.992'
+implementation 'com.milfont.tezos:tezosj_android:0.9.998'
 
 
 ## Disclaimer
@@ -33,6 +33,7 @@ Many features are not fully tested/implemented yet. This version uses Tezos Main
 - Delegate to a baker
 - Undelegate
 - Interact with POKT-Network API
+- Call smart contracts directly from Android!
 
 
 The main purpose of TezosJ SDK library is to foster development of applications in Java / Android that interacts
